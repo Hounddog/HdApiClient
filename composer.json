@@ -1,0 +1,32 @@
+{
+    "name": "hounddog/hd-api-client",
+    "description": "Zend Framework 2 Module that provides base api functionalities",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "api",
+        "zf2"
+    ],
+    "authors": [
+        {
+            "name": "Martin Shwalbe",
+            "email": "martin.shwalbe@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-modulemanager": "2.*",
+        "zendframework/zend-eventmanager": "2.*",
+        "zendframework/zend-servicemanager": "2.*",
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "3.7.*",
+        "satooshi/php-coveralls": ">=0.6.0",
+        "squizlabs/php_codesniffer": "1.4.*"   
+    },
+    "autoload": {
+        "psr-0": {
+            "HdApiclient": "src/"
+        }
+    }
+}
