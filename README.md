@@ -1,9 +1,11 @@
+Client Api Module for Zend Framework 2
+===
 
-# Client Api Module for Zend Framework 2
-
-Version 0.0.1 Created by [Martin Shwalbe](https://hounddog.github.com)
-
-[![Build Status](https://travis-ci.org/Hounddog/HdClientApi.png)](https://travis-ci.org/Hounddog/HdClientApi)
+[![Latest Stable Version](https://poser.pugx.org/hounddog/hd-api-client/v/stable.png)](https://packagist.org/packages/hounddog/hd-api-client)
+[![Latest Unstable Version](https://poser.pugx.org/hounddog/hd-api-client/v/unstable.png)](https://packagist.org/packages/hounddog/hd-api-client)
+[![Build Status](https://travis-ci.org/Hounddog/hd-api-client.svg?branch=master)](https://travis-ci.org/hounddog/hd-api-client)
+[![Code Coverage](https://scrutinizer-ci.com/g/Hounddog/hd-api-client/badges/coverage.png?s=0b25eec855c764443baf6e0fc1df3bd080eb0b01)](https://scrutinizer-ci.com/g/Hounddog/hd-api-client/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Hounddog/hd-api-client/badges/quality-score.png?s=3da296bf6e430c7d920b9cc1b24a1221635d2069)](https://scrutinizer-ci.com/g/Hounddog/hd-api-client/)
 
 ## Introduction
 
