@@ -1,74 +1,30 @@
 <?php
-/**
- * @license   http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- * @copyright Copyright (c) 2014 Zend Technologies USA Inc. (http://www.zend.com)
- */
+use HDTest\Api\Client\ServiceManagerTestCase;
 
-namespace HDTest\Api\Client;
+ini_set('error_reporting', E_ALL);
 
-use Zend\Loader\AutoloaderFactory;
-use RuntimeException;
+$files = array(__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php');
 
-error_reporting(E_ALL | E_STRICT);
-chdir(__DIR__);
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        $loader = require $file;
 
-/**
- * Test bootstrap, for setting up autoloading
- *
- * @subpackage UnitTest
- */
-class Bootstrap
-{
-    protected static $serviceManager;
-
-    public static function init()
-    {
-        static::initAutoloader();
-    }
-
-    protected static function initAutoloader()
-    {
-        $vendorPath = static::findParentPath('vendor');
-
-        if (is_readable($vendorPath . '/autoload.php')) {
-            $loader = include $vendorPath . '/autoload.php';
-            return;
-        }
-
-        $zf2Path = getenv('ZF2_PATH') ?: (defined('ZF2_PATH') ? ZF2_PATH : (is_dir($vendorPath . '/ZF2/library') ? $vendorPath . '/ZF2/library' : false));
-
-        if (!$zf2Path) {
-            throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
-        }
-
-        if (isset($loader)) {
-            $loader->add('Zend', $zf2Path . '/Zend');
-        } else {
-            include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-            AutoloaderFactory::factory(array(
-                'Zend\Loader\StandardAutoloader' => array(
-                    'autoregister_zf' => true,
-                    'namespaces' => array(
-                        'HD\Api\Client' => __DIR__ . '/../src/',
-                        __NAMESPACE__ => __DIR__,
-                        'Test' => __DIR__ . '/../vendor/Test/',
-                    ),
-                ),
-            ));
-        }
-    }
-
-    protected static function findParentPath($path)
-    {
-        $dir = __DIR__;
-        $previousDir = '.';
-        while (!is_dir($dir . '/' . $path)) {
-            $dir = dirname($dir);
-            if ($previousDir === $dir) return false;
-            $previousDir = $dir;
-        }
-        return $dir . '/' . $path;
+        break;
     }
 }
 
-Bootstrap::init();
+if (! isset($loader)) {
+    throw new RuntimeException('vendor/autoload.php could not be found. Did you run `php composer.phar install`?');
+}
+
+/* @var $loader \Composer\Autoload\ClassLoader */
+$loader->add('DoctrineModuleTest\\', __DIR__);
+
+if (file_exists(__DIR__ . '/TestConfiguration.php')) {
+    $config = require __DIR__ . '/TestConfiguration.php';
+} else {
+    $config = require __DIR__ . '/TestConfiguration.php.dist';
+}
+
+ServiceManagerTestCase::setConfiguration($config);
+unset($files, $file, $loader, $config);

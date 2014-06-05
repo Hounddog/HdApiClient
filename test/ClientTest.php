@@ -17,8 +17,14 @@ class ClientTest extends PHPUnit_Framework_TestCase
     {
         $this->serviceManager = new ServiceManager();
         $this->serviceManager->setService('HD\Api\Client\HttpClient', $this->getHttpClient('foo', 'bar'));
-        $this->serviceManager->setService('HD\Api\Client\Listener\Error', $this->getMock('HD\Api\Client\Listener\Error'));
-        $this->serviceManager->setService('HD\Api\Client\Listener\Cache', $this->getMock('HD\Api\Client\Listener\Cache'));
+        $this->serviceManager->setService(
+            'HD\Api\Client\Listener\Error',
+            $this->getMock('HD\Api\Client\Listener\Error')
+        );
+        $this->serviceManager->setService(
+            'HD\Api\Client\Listener\Cache',
+            $this->getMock('HD\Api\Client\Listener\Cache')
+        );
     }
 
     public function getHttpClient($path)
