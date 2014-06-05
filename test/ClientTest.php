@@ -1,8 +1,8 @@
 <?php
 
-namespace HdApiClientTest;
+namespace HDTest\Api\Client;
 
-use EdpGithub\Client;
+use HD\Api\Client\Client;
 use Zend\ServiceManager\ServiceManager;
 use Zend\EventManager\EventManager;
 use PHPUnit_Framework_TestCase;

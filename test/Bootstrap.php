@@ -1,80 +1,76 @@
 <?php
+/**
+ * @license   http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
+ * @copyright Copyright (c) 2014 Zend Technologies USA Inc. (http://www.zend.com)
+ */
 
-namespace HD\Social\OAuth2\Test;
+namespace HDTest\Api\Client;
 
-use Composer\Autoload\ClassLoader;
-use Zend\ModuleManager\ModuleManager;
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\ServiceManager;
+use Zend\Loader\AutoloaderFactory;
+use RuntimeException;
 
+error_reporting(E_ALL | E_STRICT);
+chdir(__DIR__);
+
+/**
+ * Test bootstrap, for setting up autoloading
+ *
+ * @subpackage UnitTest
+ */
 class Bootstrap
 {
-    /**
-     * @var array
-     */
-    public static $config;
+    protected static $serviceManager;
 
     public static function init()
     {
+        static::initAutoloader();
+    }
+
+    protected static function initAutoloader()
+    {
         $vendorPath = static::findParentPath('vendor');
 
-        $autoloaderPath = $vendorPath . '/autoload.php';
-
-        if (! is_readable($autoloaderPath)) {
-            throw new \RuntimeException("Autoloader could not be found. Did you run 'composer install --dev'?");
+        if (is_readable($vendorPath . '/autoload.php')) {
+            $loader = include $vendorPath . '/autoload.php';
+            return;
         }
 
-        $loader = require $autoloaderPath;
+        $zf2Path = getenv('ZF2_PATH') ?: (defined('ZF2_PATH') ? ZF2_PATH : (is_dir($vendorPath . '/ZF2/library') ? $vendorPath . '/ZF2/library' : false));
 
-        if (! $loader instanceof ClassLoader) {
-            throw new \RuntimeException("Autoloader could not be found. Did you run 'composer install --dev'?");
+        if (!$zf2Path) {
+            throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
         }
 
-        $loader->add('ZendTest', $vendorPath . '/zendframework/zendframework/tests');
-
-        static::$config = file_exists('./tests/config/test.application.config.php') ?
-            require './tests/config/test.application.config.php'
-            : require './tests/config/test.application.config.php.dist';
+        if (isset($loader)) {
+            $loader->add('Zend', $zf2Path . '/Zend');
+        } else {
+            include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
+            AutoloaderFactory::factory(array(
+                'Zend\Loader\StandardAutoloader' => array(
+                    'autoregister_zf' => true,
+                    'namespaces' => array(
+                        'HD\Api\Client' => __DIR__ . '/../src/',
+                        __NAMESPACE__ => __DIR__,
+                        'Test' => __DIR__ . '/../vendor/Test/',
+                    ),
+                ),
+            ));
+            echo 'teesting here!!!!!!!!';
+            exit;
+        }
     }
 
-    /**
-     * Builds a new service manager
-     *
-     * @return ServiceManager
-     */
-    public static function getServiceManager()
-    {
-        $serviceManager = new ServiceManager(
-            new ServiceManagerConfig(
-                isset(static::$config['service_manager']) ? static::$config['service_manager'] : []
-            )
-        );
-        $serviceManager->setService('ApplicationConfig', static::$config);
-        $serviceManager->setFactory('ServiceListener', 'Zend\Mvc\Service\ServiceListenerFactory');
-
-        /** @var $moduleManager ModuleManager */
-        $moduleManager = $serviceManager->get('ModuleManager');
-        $moduleManager->loadModules();
-
-        return $serviceManager;
-    }
-
-    /**
-     * @param $path
-     * @return bool|string
-     */
     protected static function findParentPath($path)
     {
         $dir = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
-            if ($previousDir === $dir) {
-                return false;
-            }
+            if ($previousDir === $dir) return false;
             $previousDir = $dir;
         }
-
         return $dir . '/' . $path;
     }
 }
+
+Bootstrap::init();
