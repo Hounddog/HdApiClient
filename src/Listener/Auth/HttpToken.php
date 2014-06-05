@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HdApiClient\Listener\Auth;
+namespace HD\Api\Client\Listener\Auth;
 
 use Zend\EventManager\Event;
 use Zend\Validator\NotEmpty;

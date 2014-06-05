@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Listener;
+namespace HD\Api\Client\Listener;
 
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -41,7 +41,6 @@ class Error implements ListenerAggregateInterface
         }
 
         $content = json_decode($response->getBody());
-        var_dump($content);
         switch ($statusCode){
             case 400:
             case 401:

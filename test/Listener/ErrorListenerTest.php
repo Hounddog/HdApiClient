@@ -1,10 +1,10 @@
 <?php
 
-namespace HdApiClientTest\Listener\Auth;
+namespace HDTest\Api\ClientTest\Listener\Auth;
 
 use PHPUnit_Framework_TestCase;
 
-use EdpGithub\Listener\Error;
+use HD\Api\Client\Listener\Error;
 use Zend\Http\Response;
 
 class ErrorListenerTest extends PHPUnit_Framework_TestCase
@@ -35,7 +35,7 @@ class ErrorListenerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test for HTTP Status 400
-     * @expectedException EdpGithub\Listener\Exception\RuntimeException
+     * @expectedException HD\Api\Client\Listener\Exception\RuntimeException
      */
     public function testPostSendBadRequest()
     {
@@ -60,7 +60,7 @@ class ErrorListenerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test for HTTP Status 401
-     * @expectedException EdpGithub\Listener\Exception\RuntimeException
+     * @expectedException HD\Api\Client\Listener\Exception\RuntimeException
      */
     public function testPostSendUnauthorized()
     {
@@ -85,7 +85,7 @@ class ErrorListenerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test for HTTP Status 422
-     * @expectedException EdpGithub\Listener\Exception\InvalidArgumentException
+     * @expectedException HD\Api\Client\Listener\Exception\InvalidArgumentException
      */
     public function testPostSendUnprocessableEntity()
     {
@@ -110,7 +110,7 @@ class ErrorListenerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test for HTTP Error
-     * @expectedException EdpGithub\Listener\Exception\RunTimeException
+     * @expectedException HD\Api\Client\Listener\Exception\RunTimeException
      */
     public function testPostSendFailed()
     {
@@ -135,7 +135,7 @@ class ErrorListenerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test for HTTP Error
-     * @expectedException EdpGithub\Listener\Exception\InvalidArgumentException
+     * @expectedException HD\Api\Client\Listener\Exception\InvalidArgumentException
      */
     public function testPostSendFailedMissingField()
     {
@@ -161,7 +161,7 @@ class ErrorListenerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test for HTTP Error
-     * @expectedException EdpGithub\Listener\Exception\InvalidArgumentException
+     * @expectedException HD\Api\Client\Listener\Exception\InvalidArgumentException
      */
     public function testPostSendFailedInvalid()
     {
@@ -189,7 +189,7 @@ class ErrorListenerTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test for HTTP Error
-     * @expectedException EdpGithub\Listener\Exception\InvalidArgumentException
+     * @expectedException HD\Api\Client\Listener\Exception\InvalidArgumentException
      */
     public function testPostSendFailedAlreadyExists()
     {

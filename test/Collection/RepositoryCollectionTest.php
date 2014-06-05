@@ -1,8 +1,8 @@
 <?php
 
-namespace HdApiClientTest\Collection;
+namespace HDTest\Api\Client\Collection;
 
-use EdpGithub\Collection\RepositoryCollection;
+use HD\Api\Client\Collection\RepositoryCollection;
 use PHPUnit_Framework_TestCase;
 
 class RepositoryCollectionTest extends PHPUnit_Framework_TestCase
@@ -41,7 +41,7 @@ class RepositoryCollectionTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($headers));
 
 
-        $httpClient = $this->getMock('EdpGithub\Http\Client');
+        $httpClient = $this->getMock('HD\Api\Client\Http\Client');
         $httpClient->expects($this->any())
             ->method('get')
             ->with($expectedPath)

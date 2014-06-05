@@ -55,8 +55,6 @@ class Bootstrap
                     ),
                 ),
             ));
-            echo 'teesting here!!!!!!!!';
-            exit;
         }
     }
 

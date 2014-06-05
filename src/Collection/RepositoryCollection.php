@@ -1,11 +1,11 @@
 <?php
 
-namespace HdApiClient\Collection;
+namespace HD\Api\Client\Collection;
 
-use HdApiClient\Http\Client;
-use HdApiClient\Api\Model\Repo as RepoModel;
+use HD\Api\Client\Http\Client;
+use HD\Api\Client\Api\Model\Repo as RepoModel;
 use Zend\Stdlib\Hydrator;
-use Closure
+use Closure;
 use Iterator;
 
 class RepositoryCollection implements Iterator

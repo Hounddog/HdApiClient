@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Listener;
+namespace HD\Api\Client\Listener;
 
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\EventManagerInterface;

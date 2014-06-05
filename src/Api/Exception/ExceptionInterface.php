@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Api\Exception;
+namespace HD\Api\Client\Api\Exception;
 
 interface ExceptionInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace HdApiClientTest\Http;
+namespace HDTest\Api\Client\Http;
 
 use PHPUnit_Framework_TestCase;
-use EdpGithub\Http\Client;
+use HD\Api\Client\Http\Client;
 use Zend\EventManager\EventManager;
 
 class ClientTest extends PHPUnit_Framework_TestCase

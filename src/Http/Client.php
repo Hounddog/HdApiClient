@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Http;
+namespace HD\Api\Client\Http;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Curl;
@@ -46,7 +46,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     private $options;
 
-    public function __construct($options)
+   /* public function __construct($options)
     {
         $this->setOptions($options);
     }
@@ -59,7 +59,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
     public function getOptions()
     {
         return $this->options;
-    }
+    }*/
 
     /**
      * Get Request
@@ -84,7 +84,6 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     public function post($path, array $parameters = array(), array $headers = array())
     {
-        var_dump($parameters);
         return $this->request($path, $parameters, 'POST', $headers);
     }
 
@@ -125,7 +124,6 @@ class Client implements EventManagerAwareInterface, ClientInterface
     public function request($path, array $parameters = array(), $httpMethod = 'GET', array $headers = array())
     {
         $client = $this->getHttpClient($path);
-        //var_dump($client);exit;
         $request = $client->getRequest();
 
         if ($httpMethod == 'GET') {
@@ -147,15 +145,8 @@ class Client implements EventManagerAwareInterface, ClientInterface
         //Trigger Pre Send Event to modify Request Object
         $this->getEventManager()->trigger('pre.send', $request);
 
-        //echo "<pre>";
-        //print_r($request);
-        //exit;
         $response = $client->dispatch($request);
-        //$this->response = $response;
-        //echo "<pre>";
-        //print_r($response);
-        //echo $response->getBody();
-        //exit;
+ 
         //Trigger Post Send to Modify/Validate Response object
         $result = $this->getEventManager()->trigger('post.send', $response);
         if ($result->stopped()) {

@@ -1,9 +1,9 @@
 <?php
 
-namespace HdApiClientTest\Listener\Auth;
+namespace HDTest\Api\Client\Listener\Auth;
 
 use PHPUnit_Framework_TestCase;
-use EdpGithub\Listener\Auth\UrlClientId;
+use HD\Api\Client\Listener\Auth\UrlClientId;
 
 class UrlClientIdTest extends PHPUnit_Framework_TestCase
 {
@@ -37,7 +37,7 @@ class UrlClientIdTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test if tokenOrLogin is not set
-     * @expectedException EdpGithub\Listener\Auth\Exception\InvalidArgumentException
+     * @expectedException HD\Api\Client\Listener\Auth\Exception\InvalidArgumentException
      */
     public function testPreSendFaultyOptions()
     {
@@ -47,7 +47,7 @@ class UrlClientIdTest extends PHPUnit_Framework_TestCase
 
     /**
      * Test if tokenOrLogin is empty
-     * @expectedException EdpGithub\Listener\Auth\Exception\InvalidArgumentException
+     * @expectedException HD\Api\Client\Listener\Auth\Exception\InvalidArgumentException
      */
     public function testPreSendEmptyTokenOrLogin()
     {

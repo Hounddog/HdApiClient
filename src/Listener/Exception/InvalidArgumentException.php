@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Listener\Exception;
+namespace HD\Api\Client\Listener\Exception;
 
 class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {

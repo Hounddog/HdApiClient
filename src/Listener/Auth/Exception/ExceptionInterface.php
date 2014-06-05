@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Listener\Auth\Exception;
+namespace HD\Api\Client\Listener\Auth\Exception;
 
 interface ExceptionInterface
 {

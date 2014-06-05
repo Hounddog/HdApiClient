@@ -16,9 +16,9 @@ class ClientTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->serviceManager = new ServiceManager();
-        $this->serviceManager->setService('EdpGithub\HttpClient', $this->getHttpClient('foo', 'bar'));
-        $this->serviceManager->setService('EdpGithub\Listener\Error', $this->getMock('EdpGithub\Listener\Error'));
-        $this->serviceManager->setService('EdpGithub\Listener\Cache', $this->getMock('EdpGithub\Listener\Cache'));
+        $this->serviceManager->setService('HD\Api\Client\HttpClient', $this->getHttpClient('foo', 'bar'));
+        $this->serviceManager->setService('HD\Api\Client\Listener\Error', $this->getMock('HD\Api\Client\Listener\Error'));
+        $this->serviceManager->setService('HD\Api\Client\Listener\Cache', $this->getMock('HD\Api\Client\Listener\Cache'));
     }
 
     public function getHttpClient($path)
@@ -26,7 +26,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $response = $this->getMock('Zend\Http\Response');
         $eventManager = new EventManager();
 
-        $httpClient = $this->getMock('EdpGithub\Http\Client');
+        $httpClient = $this->getMock('HD\Api\Client\Http\Client');
         $httpClient->expects($this->any())
             ->method('get')
             ->with($path)
@@ -50,7 +50,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
     public function testAuthenticate()
     {
-        $authListener = $this->getMock('EdpGithub\Listener\Auth\UrlToken');
+        $authListener = $this->getMock('HD\Api\Client\Listener\Auth\UrlToken');
         $authListener->expects($this->once())
             ->method('setOptions')
             ->with(array(
@@ -61,7 +61,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
         $sm->expects($this->once())
             ->method('get')
-            ->with('EdpGithub\Listener\Auth\UrlToken')
+            ->with('\Listener\Auth\UrlToken')
             ->will($this->returnValue($authListener));
 
         $this->client = new Client();
@@ -85,7 +85,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
         $httpClient = $client->getHttpClient();
 
-        $this->assertInstanceOf('EdpGithub\Http\Client', $httpClient);
+        $this->assertInstanceOf('HD\Api\Client\Http\Client', $httpClient);
     }
 
     public function testSetEventManager()
@@ -93,19 +93,6 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client = new Client();
         $result = $client->setEventManager(new EventManager);
 
-        $this->assertInstanceOf('EdpGithub\Client', $result);
-    }
-
-    public function testApi()
-    {
-        $client = new Client();
-        $serviceManager = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $serviceManager->expects($this->once())
-            ->method('get')
-            ->with($this->equalTo('EdpGithub\Api\CurrentUser'))
-            ->will($this->returnValue($this->getMock('EdpGithub\Api\CurrentUser')));
-        $client->setServiceManager($serviceManager);
-        $result = $client->api('current_user');
-
+        $this->assertInstanceOf('HD\Api\Client\Client', $result);
     }
 }

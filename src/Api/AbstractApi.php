@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Api;
+namespace HD\Api\Client\Api;
 
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;

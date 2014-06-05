@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient\Http;
+namespace HD\Api\Client\Http;
 
 interface ClientInterface
 {
