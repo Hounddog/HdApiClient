@@ -46,15 +46,18 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     private $options;
 
-    public function __construct($options) {
+    public function __construct($options)
+    {
         $this->setOptions($options);
     }
 
-    public function setOptions($options) {
+    public function setOptions($options)
+    {
         $this->options = $options;
     }
 
-    public function getOptions() {
+    public function getOptions()
+    {
         return $this->options;
     }
 
@@ -125,18 +128,18 @@ class Client implements EventManagerAwareInterface, ClientInterface
         //var_dump($client);exit;
         $request = $client->getRequest();
 
-        if($httpMethod == 'GET') {
+        if ($httpMethod == 'GET') {
             $query = $request->getQuery();
 
-            foreach($parameters as $key => $value) {
+            foreach ($parameters as $key => $value) {
                 $query->set($key, $value);
             }
-        } elseif($httpMethod == 'POST') {
+        } elseif ($httpMethod == 'POST') {
             $client->setEncType('multipart/form-data');
             $request->setMethod('POST');
             $post = $request->getPost();
 
-            foreach($parameters as $key => $value) {
+            foreach ($parameters as $key => $value) {
                 $post->set($key, $value);
             }
         }
@@ -155,7 +158,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
         //exit;
         //Trigger Post Send to Modify/Validate Response object
         $result = $this->getEventManager()->trigger('post.send', $response);
-        if($result->stopped()) {
+        if ($result->stopped()) {
             $response = $result->last();
         }
 
@@ -172,7 +175,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     public function getHttpClient($path)
     {
-        if(null === $this->httpClient) {
+        if (null === $this->httpClient) {
             $this->httpClient = new HttpClient();
             $this->httpClient->setAdapter($this->getHttpAdapter());
         }
@@ -186,7 +189,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     public function getHttpAdapter()
     {
-        if(null === $this->httpAdapter){
+        if (null === $this->httpAdapter) {
             $this->httpAdapter = new Curl();
             $this->httpAdapter->setOptions(array(
                 'sslverifypeer' =>false,

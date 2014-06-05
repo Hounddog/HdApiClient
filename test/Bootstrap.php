@@ -1,108 +1,80 @@
 <?php
-namespace EdpGithubTest;
 
-use Zend\Loader\AutoloaderFactory;
+namespace HD\Social\OAuth2\Test;
+
+use Composer\Autoload\ClassLoader;
+use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
-use RuntimeException;
-
-error_reporting(E_ALL | E_STRICT);
-chdir(__DIR__);
 
 class Bootstrap
 {
-    protected static $serviceManager;
+    /**
+     * @var array
+     */
+    public static $config;
 
     public static function init()
     {
-        // Load the user-defined test configuration file, if it exists; otherwise, load
-        if (is_readable(__DIR__ . '/TestConfig.php')) {
-            $testConfig = include __DIR__ . '/TestConfig.php';
-        } else {
-            $testConfig = include __DIR__ . '/TestConfig.php.dist';
-        }
-
-        $zf2ModulePaths = array(dirname(dirname(__DIR__)));
-        if (($path = static::findParentPath('vendor'))) {
-            $zf2ModulePaths[] = $path;
-        }
-        if (($path = static::findParentPath('module')) !== $zf2ModulePaths[0]) {
-            $zf2ModulePaths[] = $path;
-        }
-
-        if(isset($testConfig['module_listener_options']['module_paths'])) {
-            $modulePaths = $testConfig['module_listener_options']['module_paths'];
-            foreach($modulePaths as $modulePath) {
-                if (($path = static::findParentPath($modulePath)) !== $zf2ModulePaths[0]) {
-                    $zf2ModulePaths[] = $path;
-                }
-            }
-        }
-
-        $zf2ModulePaths  = implode(PATH_SEPARATOR, $zf2ModulePaths) . PATH_SEPARATOR;
-        $zf2ModulePaths .= getenv('ZF2_MODULES_TEST_PATHS') ?: (defined('ZF2_MODULES_TEST_PATHS') ? ZF2_MODULES_TEST_PATHS : '');
-
-        static::initAutoloader();
-
-        // use ModuleManager to load this module and it's dependencies
-        $baseConfig = array(
-            'module_listener_options' => array(
-                'module_paths' => explode(PATH_SEPARATOR, $zf2ModulePaths),
-            ),
-        );
-
-        $config = ArrayUtils::merge($baseConfig, $testConfig);
-
-        $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setService('ApplicationConfig', $config);
-        $serviceManager->get('ModuleManager')->loadModules();
-        static::$serviceManager = $serviceManager;
-    }
-
-    public static function getServiceManager()
-    {
-        return static::$serviceManager;
-    }
-
-    protected static function initAutoloader()
-    {
         $vendorPath = static::findParentPath('vendor');
 
-        if (is_readable($vendorPath . '/autoload.php')) {
-            $loader = include $vendorPath . '/autoload.php';
-        } else {
-            $zf2Path = getenv('ZF2_PATH') ?: (defined('ZF2_PATH') ? ZF2_PATH : (is_dir($vendorPath . '/ZF2/library') ? $vendorPath . '/ZF2/library' : false));
+        $autoloaderPath = $vendorPath . '/autoload.php';
 
-            if (!$zf2Path) {
-                throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
-            }
-
-            include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-
+        if (! is_readable($autoloaderPath)) {
+            throw new \RuntimeException("Autoloader could not be found. Did you run 'composer install --dev'?");
         }
 
-        AutoloaderFactory::factory(array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'autoregister_zf' => true,
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
-                ),
-            ),
-        ));
+        $loader = require $autoloaderPath;
+
+        if (! $loader instanceof ClassLoader) {
+            throw new \RuntimeException("Autoloader could not be found. Did you run 'composer install --dev'?");
+        }
+
+        $loader->add('ZendTest', $vendorPath . '/zendframework/zendframework/tests');
+
+        static::$config = file_exists('./tests/config/test.application.config.php') ?
+            require './tests/config/test.application.config.php'
+            : require './tests/config/test.application.config.php.dist';
     }
 
+    /**
+     * Builds a new service manager
+     *
+     * @return ServiceManager
+     */
+    public static function getServiceManager()
+    {
+        $serviceManager = new ServiceManager(
+            new ServiceManagerConfig(
+                isset(static::$config['service_manager']) ? static::$config['service_manager'] : []
+            )
+        );
+        $serviceManager->setService('ApplicationConfig', static::$config);
+        $serviceManager->setFactory('ServiceListener', 'Zend\Mvc\Service\ServiceListenerFactory');
+
+        /** @var $moduleManager ModuleManager */
+        $moduleManager = $serviceManager->get('ModuleManager');
+        $moduleManager->loadModules();
+
+        return $serviceManager;
+    }
+
+    /**
+     * @param $path
+     * @return bool|string
+     */
     protected static function findParentPath($path)
     {
         $dir = __DIR__;
         $previousDir = '.';
         while (!is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
-            if ($previousDir === $dir) return false;
+            if ($previousDir === $dir) {
+                return false;
+            }
             $previousDir = $dir;
         }
+
         return $dir . '/' . $path;
     }
 }
-
-Bootstrap::init();

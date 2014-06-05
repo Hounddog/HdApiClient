@@ -41,11 +41,13 @@ class Client implements ServiceManagerAwareInterface, EventManagerAwareInterface
      * Set Api Namespace
      * @param string $nnamespace
      */
-    public function setApiNamespace($namespace) {
+    public function setApiNamespace($namespace)
+    {
         $this->apiNamespace = $namespace;
     }
 
-    public function getApiNamespace() {
+    public function getApiNamespace()
+    {
         return $this->apiNamespace;
     }
 
@@ -100,13 +102,13 @@ class Client implements ServiceManagerAwareInterface, EventManagerAwareInterface
      */
     public function getHttpClient()
     {
-        if(null === $this->httpClient) {
-           $this->httpClient = $this->getServiceManager()->get('HdApiClient\HttpClient');
-           $errorListener = $this->getServiceManager()->get('HdApiClient\Listener\Error');
-           $eventManager = $this->httpClient->getEventManager();
-           $eventManager->attachAggregate($errorListener);
-           //$cacheListener = $this->getServiceManager()->get('HdApiClient\Listener\Cache');
-           //$eventManager->attachAggregate($cacheListener);
+        if (null === $this->httpClient) {
+            $this->httpClient = $this->getServiceManager()->get('HdApiClient\HttpClient');
+            $errorListener = $this->getServiceManager()->get('HdApiClient\Listener\Error');
+            $eventManager = $this->httpClient->getEventManager();
+            $eventManager->attachAggregate($errorListener);
+            //$cacheListener = $this->getServiceManager()->get('HdApiClient\Listener\Cache');
+            //$eventManager->attachAggregate($cacheListener);
         }
         return $this->httpClient;
     }
