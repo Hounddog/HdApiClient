@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient;
+namespace HD\Api\Client;
 
 use Zend\ModuleManager\ModuleManager,
     Zend\EventManager\StaticEventManager;
@@ -12,7 +12,7 @@ class Module
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                    __NAMESPACE__ => __DIR__ . '/src/',
                 ),
             ),
         );
