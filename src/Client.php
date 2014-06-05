@@ -1,6 +1,6 @@
 <?php
 
-namespace HdApiClient;
+namespace HD\Api\Client;
 
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
@@ -10,7 +10,7 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 
-use HdApiClient\Http\ClientInterface;
+use HD\Api\Client\Http\ClientInterface;
 
 class Client implements ServiceManagerAwareInterface, EventManagerAwareInterface
 {
