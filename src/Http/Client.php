@@ -46,7 +46,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     private $options;
 
-   /* public function __construct($options)
+    public function __construct($options)
     {
         $this->setOptions($options);
     }
@@ -59,7 +59,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
     public function getOptions()
     {
         return $this->options;
-    }*/
+    }
 
     /**
      * Get Request

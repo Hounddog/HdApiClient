@@ -40,8 +40,13 @@ class RepositoryCollectionTest extends PHPUnit_Framework_TestCase
             ->method('getHeaders')
             ->will($this->returnValue($headers));
 
+        $options = array(
+            'base_url' => 'https://api.com/',
+            'api_version' => 'v1',
+            'timeout'     => 10,
+        );
 
-        $httpClient = $this->getMock('HD\Api\Client\Http\Client');
+        $httpClient = $this->getMock('HD\Api\Client\Http\Client', array(), $options);
         $httpClient->expects($this->any())
             ->method('get')
             ->with($expectedPath)

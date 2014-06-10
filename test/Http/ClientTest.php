@@ -12,7 +12,12 @@ class ClientTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->client = new Client();
+        $options = array(
+            'base_url' => 'https://api.com/',
+            'api_version' => 'v1',
+            'timeout'     => 10,
+        );
+        $this->client = new Client($options);
 
         $adapter = new \Zend\Http\Client\Adapter\Test();
         $adapter->setResponse(
