@@ -32,7 +32,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $response = $this->getMock('Zend\Http\Response');
         $eventManager = new EventManager();
 
-        $httpClient = $this->getMock('HD\Api\Client\Http\Client');
+        $options = array(
+            'base_url' => 'https://api.com/',
+            'api_version' => 'v1',
+            'timeout'     => 10,
+        );
+        
+        $httpClient = $this->getMock('HD\Api\Client\Http\Client', array(), $options);
         $httpClient->expects($this->any())
             ->method('get')
             ->with($path)
