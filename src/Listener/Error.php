@@ -41,6 +41,7 @@ class Error implements ListenerAggregateInterface
         }
 
         $content = json_decode($response->getBody());
+        
         switch ($statusCode){
             case 400:
             case 401:

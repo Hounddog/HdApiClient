@@ -46,11 +46,6 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     private $options;
 
-    public function __construct($options)
-    {
-        $this->setOptions($options);
-    }
-
     public function setOptions($options)
     {
         $this->options = $options;
@@ -146,7 +141,7 @@ class Client implements EventManagerAwareInterface, ClientInterface
         $this->getEventManager()->trigger('pre.send', $request);
 
         $response = $client->dispatch($request);
- 
+
         //Trigger Post Send to Modify/Validate Response object
         $result = $this->getEventManager()->trigger('post.send', $response);
         if ($result->stopped()) {
@@ -155,6 +150,8 @@ class Client implements EventManagerAwareInterface, ClientInterface
 
         $this->request = $request;
 
+        $result = json_decode($response->getBody());
+        
         return $response;
     }
 

@@ -71,19 +71,12 @@ class Client implements ServiceManagerAwareInterface, EventManagerAwareInterface
      * @param null|string $password      GitHub password/secret
      * @param string $authMethod
      */
-    public function authenticate($authMethod, $tokenOrLogin, $password = null)
+    public function authenticate($authMethod, $options)
     {
-        $filter = new UnderscoreToCamelCase();
-        $authMethod = $filter->filter($authMethod);
-
         $sm = $this->getServiceManager();
-        $authListener = $sm->get($this->getApiNamespace() . '\Listener\Auth\\' . $authMethod);
-        $authListener->setOptions(
-            array(
-                'tokenOrLogin' => $tokenOrLogin,
-                'password'     => $password
-            )
-        );
+        $authListener = $sm->get($authMethod);
+        $authListener->setOptions($options);
+
         $this->getHttpClient()->getEventManager()->attachAggregate($authListener);
     }
 
@@ -103,12 +96,10 @@ class Client implements ServiceManagerAwareInterface, EventManagerAwareInterface
     public function getHttpClient()
     {
         if (null === $this->httpClient) {
-            $this->httpClient = $this->getServiceManager()->get('HdApiClient\HttpClient');
-            $errorListener = $this->getServiceManager()->get('HdApiClient\Listener\Error');
+            $this->httpClient = $this->getServiceManager()->get('HD\Api\Client\HttpClient');
+            $errorListener = $this->getServiceManager()->get('HD\Api\Client\Listener\Error');
             $eventManager = $this->httpClient->getEventManager();
             $eventManager->attachAggregate($errorListener);
-            //$cacheListener = $this->getServiceManager()->get('HdApiClient\Listener\Cache');
-            //$eventManager->attachAggregate($cacheListener);
         }
         return $this->httpClient;
     }

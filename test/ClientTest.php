@@ -31,14 +31,8 @@ class ClientTest extends PHPUnit_Framework_TestCase
     {
         $response = $this->getMock('Zend\Http\Response');
         $eventManager = new EventManager();
-
-        $options = array(
-            'base_url' => 'https://api.com/',
-            'api_version' => 'v1',
-            'timeout'     => 10,
-        );
         
-        $httpClient = $this->getMock('HD\Api\Client\Http\Client', array(), $options);
+        $httpClient = $this->getMock('HD\Api\Client\Http\Client');
         $httpClient->expects($this->any())
             ->method('get')
             ->with($path)
@@ -79,7 +73,13 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $this->client = new Client();
         $this->client->setServiceManager($sm);
         $this->client->setHttpClient($this->getHttpClient('test'));
-        $this->client->authenticate('url_token', '12345');
+        $this->client->authenticate(
+            '\Listener\Auth\UrlToken',
+            array(
+                'tokenOrLogin' => '12345',
+                'password' =>null,
+            )
+        );
     }
 
     public function testSetServiceManager()
