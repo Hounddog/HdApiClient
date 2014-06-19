@@ -13,6 +13,7 @@ return array(
         ),
         'shared' => array(
             'HD\Api\Client\Http\Client' => false,
+            'HD\Api\Client\Client' => false,
         ),
     )
 );
