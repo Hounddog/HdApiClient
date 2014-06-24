@@ -118,7 +118,10 @@ class Client implements EventManagerAwareInterface, ClientInterface
      */
     public function request($path, array $parameters = array(), $httpMethod = 'GET', array $headers = array())
     {
-        $client = $this->getHttpClient($path);
+        $client = $this->getHttpClient();
+        $client->reset();
+        
+        $client->setUri($this->options['base_url'] . $this->options['api_version'] . '/' . $path);
         $request = $client->getRequest();
 
         if ($httpMethod == 'GET') {
@@ -161,13 +164,13 @@ class Client implements EventManagerAwareInterface, ClientInterface
      * @param  string $path
      * @return HttpClient
      */
-    public function getHttpClient($path)
+    public function getHttpClient()
     {
         if (null === $this->httpClient) {
             $this->httpClient = new HttpClient();
             $this->httpClient->setAdapter($this->getHttpAdapter());
         }
-        $this->httpClient->setUri($this->options['base_url'] . $this->options['api_version'] . '/' . $path);
+        
         return $this->httpClient;
     }
 
